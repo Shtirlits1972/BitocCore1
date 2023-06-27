@@ -2,20 +2,34 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
 
 namespace BitocCore1.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IMemoryCache _memoryCache;
+        IPairsProvider pairsProvider;
+
+        public HomeController(IMemoryCache memoryCache)
         {
-            _logger = logger;
+            _memoryCache = memoryCache;
+            pairsProvider = new BitcoinService(memoryCache);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            return View();
+            IEnumerable<string> pairs = pairsProvider.GetPairs(page);
+
+            var pager = new Pager((int)(pairsProvider.Count()), page);
+            var viewModel = new IndexViewModel
+            {
+                Items = pairs,
+                Pager = pager
+            };
+
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

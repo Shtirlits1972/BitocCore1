@@ -1,7 +1,70 @@
-﻿</br>
-</br>
-</br>
-<p>last page 54060</p>
-<a href="/GetPairs/54060">/GetPairs/54060</a>
-</br>
-<a href="/count">/count</a>
+﻿@model IndexViewModel
+@addTagHelper *, PagerApp
+
+<html>
+<head>
+    <title>Home</title>
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+</head>
+<body>
+
+    <h1>Список валютных пар</h1>
+    <div class="container" >
+        <div class="col-md-6 col-md">
+            <ul>
+                @foreach (var item in Model.Items)
+                {
+                    <li>@item</li>
+                }
+            </ul>
+
+            <!-- pager -->
+            @if (Model.Pager.EndPage > 1)
+            {
+                <ul class="pagination">
+                    @if (Model.Pager.CurrentPage > 1)
+                    {
+                        <li>
+                            <a href="~/Home/Index">First</a>
+                        </li>
+                        <li>
+                            <a href="~/Home/Index?page=@(Model.Pager.CurrentPage - 1)">Previous</a>
+                        </li>
+                    }
+
+                    @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                    {
+                        <li class="@(page == Model.Pager.CurrentPage ? "active" : "")">
+                            <a href="~/Home/Index?page=@(page)">
+                                @(
+                                    page
+                                    )
+                            </a>
+                        </li>
+                    }
+
+                    @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                    {
+                        <li>
+                            <a href="~/Home/Index?page=@(Model.Pager.CurrentPage + 1)">Next</a>
+                        </li>
+                        <li>
+                            <a href="~/Home/Index?page=@(Model.Pager.TotalPages)">Last</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+    <hr />
+    </br>
+    </br>
+    </br>
+    <p>last page 54060</p>
+    <a href="/GetPairs/54060">/GetPairs/54060</a>
+    </br>
+    <a href="/count">/count</a>
+</body>
+</html>

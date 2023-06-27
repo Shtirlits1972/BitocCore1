@@ -23,10 +23,10 @@ app.MapGet("/count", (BitcoinService bitcoinService) =>
     return " count = 0 ";
 });
 
-app.MapGet("/GetPairs/{page}", async (int page, BitcoinService bitcoinService) =>
+app.MapGet("/GetPairs/{page}", (int page, BitcoinService bitcoinService) =>
 {
     var list = (bitcoinService as IPairsProvider).GetPairs(page);
-    if (list != null) return JsonConvert.SerializeObject(list); //  ;
+    if (list != null) return JsonConvert.SerializeObject(list); 
     return " list = 0 ";
 });
 
