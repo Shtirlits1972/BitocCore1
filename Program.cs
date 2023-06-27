@@ -25,7 +25,6 @@ app.MapGet("/count", (BitcoinService bitcoinService) =>
 
 app.MapGet("/GetPairs/{page}", async (int page, BitcoinService bitcoinService) =>
 {
-    string mimeType = "image/png";
     var list = (bitcoinService as IPairsProvider).GetPairs(page);
     if (list != null) return JsonConvert.SerializeObject(list); //  ;
     return " list = 0 ";
